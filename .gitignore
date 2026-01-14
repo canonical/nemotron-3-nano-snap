@@ -7,8 +7,5 @@ prime/
 *.comp
 squashfs-root
 
-# Build script artifact
-snapcraft.yaml
-
 # IDE
 .vscode/
