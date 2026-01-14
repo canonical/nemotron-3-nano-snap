@@ -1,0 +1,101 @@
+name: nemotron-snap # you probably want to 'snapcraft register <name>'
+base: core24 # the base snap is the execution environment for this snap
+version: '0.0' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Inference Snap for NemotronNano330BA3B  # 79 char long summary
+description: |
+  This is an inference snap that lets you run NemotronNano330BA3B model using CPU.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+compression: lzo
+
+environment:
+  # Set path to snap components
+  SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  # To find shared libraries that are staged and moved to components
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
+
+hooks:
+  install:
+    plugs:
+      # For hardware detection
+      - hardware-observe
+      - opengl
+      - kernel-module-observe
+
+parts:
+  cli:
+    source: https://github.com/canonical/inference-snaps-cli.git
+    source-tag: v1.0.0-beta.24
+    plugin: go
+    build-snaps:
+      - go/1.24/stable
+    stage-packages:
+      - pciutils
+      - clinfo # for Intel GPU vRAM detection
+    organize:
+      bin/cli: bin/modelctl
+  component-local-files:
+    plugin: dump
+    source: components
+    organize:
+      "llama-cpp": (component/llama-cpp)
+      "nemotoron-nano3-30b": (component/nemotoron-nano3-30b)
+  engines:
+    source: engines
+    plugin: dump
+    organize:
+      "*": engines/
+  scripts:
+    source: scripts
+    plugin: dump
+    organize:
+      "*": bin/
+  common-runtime-dependencies:
+    plugin: nil
+    stage-snaps:
+      - jq # used in server.sh
+  gemma-license:
+    source: https://ai.google.dev/gemma/terms.md.txt
+    source-type: file
+    plugin: dump
+    organize:
+      "terms.md.txt": LICENSE_TERMS.md
+  llama-cpp:
+    plugin: dump
+    source: 
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7728/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7728/llamacpp-arm64.tar.gz
+    stage-packages:
+      - libgomp1
+    organize:
+      # move everything, including the staged packages
+      "*": (component/llama-cpp)
+apps:
+  nemotron-snap:
+    command: bin/modelctl
+    plugs:
+      # For hardware detection
+      - hardware-observe
+      - opengl
+      # To access server over network socket
+      - network
+  server:
+    command: bin/server.sh
+    daemon: simple
+    plugs:
+      # Needed for server app
+      - network-bind
+      # For inference and when running some modelctl commands
+      - hardware-observe
+      - opengl
+
+components: 
+  nemotoron-nano3-30b:
+    type: standard
+    summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
+    description: 30B parameter LLM model in GGUF format optimized for CPU inference
+  llama-cpp:
+    type: standard
+    summary: llama.cpp HTTP server
+    description: Optimized for inference on CPUs
