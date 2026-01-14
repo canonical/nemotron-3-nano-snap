@@ -1,0 +1,14 @@
+# Snap artifacts
+partitions/
+parts/
+stage/
+prime/
+*.snap
+*.comp
+squashfs-root
+
+# Build script artifact
+snapcraft.yaml
+
+# IDE
+.vscode/
