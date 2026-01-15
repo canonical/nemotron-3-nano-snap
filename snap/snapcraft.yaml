@@ -26,18 +26,21 @@ parts:
     source: .
     build-packages:
       - git-lfs
+
     override-pull: |
       craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
-      
+
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
     source-tag: v1.0.0-beta.24
     plugin: go
     build-snaps:
       - go/1.24/stable
+
     stage-packages:
       - pciutils
       - clinfo
+
     organize:
       bin/cli: bin/modelctl
 
@@ -70,8 +73,10 @@ parts:
     source: 
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-amd64.tar.gz
       - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-arm64.tar.gz
+
     stage-packages:
       - libgomp1
+
     organize:
       "*": (component/llama-cpp)
 
