@@ -1,15 +1,24 @@
-#!/bin/bash -eux
-echo "Running install hook"
-  
-# Set generic config
-if modelctl set --package http.port="9090"; then
-    echo "Successfully set http.port to 9090"
-else
-    echo "Failed to set http.port"
-    exit 1
-fi
+#!/bin/bash -eu
 
+tag="snap.$SNAP_INSTANCE_NAME.hook.install"
+
+# Redirect stdout to stdout+syslog
+exec 1> >(tee >(logger --tag=$tag))
+# Redirect stderr to stderr+syslog
+exec 2> >(logger --stderr --priority error --tag=$tag)
+
+#
+# Set generic config
+#
+
+modelctl set --package http.port="8330"
+modelctl set --package http.host="127.0.0.1"
+modelctl set --package verbose="false"
+
+#
 # Auto select an engine
+#
+
 if snapctl is-connected hardware-observe; then
     modelctl use-engine --auto --assume-yes
 elif lscpu -V &> /dev/null; then

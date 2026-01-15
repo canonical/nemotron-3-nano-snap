@@ -1,8 +1,8 @@
 name: nemotron-3-nano
 base: core24
-summary: Inference Snap for NemotronNano330BA3B
+summary: Inference Snap for Nemotron 3 nano 30B A3B Q4_K_M model
 description: |
-  This is an inference snap that lets you run NemotronNano330BA3B model using CPU.
+  This is an inference snap that lets you run Nemotron 3 nano 30B A3B Q4_K_M model using CPU.
 
 adopt-info: version
 
@@ -46,7 +46,7 @@ parts:
     source: components
     organize:
       "llama-cpp": (component/llama-cpp)
-      "nemotoron-nano3-30b": (component/nemotoron-nano3-30b)
+      "model-30b-a3b-q4-k-m-gguf": (component/model-30b-a3b-q4-k-m-gguf)
 
   engines:
     source: engines
@@ -68,15 +68,15 @@ parts:
   llama-cpp:
     plugin: dump
     source: 
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7728/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7728/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
     organize:
       "*": (component/llama-cpp)
 
 components: 
-  nemotoron-nano3-30b:
+  model-30b-a3b-q4-k-m-gguf:
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
     description: 30B parameter LLM model in GGUF format optimized for CPU inference

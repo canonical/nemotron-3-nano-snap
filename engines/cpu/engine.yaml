@@ -12,4 +12,4 @@ memory: 24G
 disk-space: 48G
 components:
   - llama-cpp
-  - model-nemotron-3-nano-30b
+  - model-30b-a3b-q4-k-m-gguf
