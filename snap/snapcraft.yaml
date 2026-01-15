@@ -99,4 +99,3 @@ components:
     type: standard
     summary: llama.cpp HTTP server
     description: Optimized for inference on CPUs
-    
