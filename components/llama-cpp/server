@@ -5,5 +5,4 @@ port="$(modelctl get http.port)"
 exec llama-server \
   --model "$MODEL_FILE" \
   --port "$port" \
-  --n-gpu-layers 0 \
   "$@"
