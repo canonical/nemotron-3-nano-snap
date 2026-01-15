@@ -7,3 +7,4 @@ exec llama-server \
   --port "$port" \
   --no-warmup \
   "$@"
+  

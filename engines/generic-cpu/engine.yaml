@@ -11,3 +11,4 @@ disk-space: 25G
 components:
   - llama-cpp
   - nemotoron-nano3-30b
+  
