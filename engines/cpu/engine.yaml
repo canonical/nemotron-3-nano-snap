@@ -1,4 +1,4 @@
-name: generic-cpu
+name: cpu
 description: Use CPU
 vendor: Canonical Ltd
 grade: stable
@@ -6,8 +6,10 @@ devices:
   anyof:
     - type: cpu
       architecture: amd64
-memory: 25G
-disk-space: 25G
+    - type: cpu
+      architecture: arm64
+memory: 24G
+disk-space: 48G
 components:
   - llama-cpp
-  - nemotoron-nano3-30b
+  - model-nemotron-3-nano-30b

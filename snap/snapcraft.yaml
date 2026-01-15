@@ -1,9 +1,10 @@
-name: nemotron-snap
+name: nemotron-3-nano
 base: core24
-version: '0.0'
 summary: Inference Snap for NemotronNano330BA3B
 description: |
   This is an inference snap that lets you run NemotronNano330BA3B model using CPU.
+
+adopt-info: version
 
 grade: devel
 confinement: strict 
@@ -18,9 +19,16 @@ hooks:
     plugs:
       - hardware-observe
       - opengl
-      - kernel-module-observe
 
 parts:
+  version:
+    plugin: dump
+    source: .
+    build-packages:
+      - git-lfs
+    override-pull: |
+      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+      
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
     source-tag: v1.0.0-beta.24
@@ -32,32 +40,31 @@ parts:
       - clinfo
     organize:
       bin/cli: bin/modelctl
+
   component-local-files:
     plugin: dump
     source: components
     organize:
       "llama-cpp": (component/llama-cpp)
       "nemotoron-nano3-30b": (component/nemotoron-nano3-30b)
+
   engines:
     source: engines
     plugin: dump
     organize:
       "*": engines/
+
   scripts:
     source: scripts
     plugin: dump
     organize:
       "*": bin/
+
   common-runtime-dependencies:
     plugin: nil
     stage-snaps:
       - jq
-  gemma-license:
-    source: https://ai.google.dev/gemma/terms.md.txt
-    source-type: file
-    plugin: dump
-    organize:
-      "terms.md.txt": LICENSE_TERMS.md
+
   llama-cpp:
     plugin: dump
     source: 
@@ -73,18 +80,20 @@ components:
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
     description: 30B parameter LLM model in GGUF format optimized for CPU inference
+
   llama-cpp:
     type: standard
     summary: llama.cpp HTTP server
     description: Optimized for inference on CPUs
 
 apps:
-  nemotron-snap:
+  nemotron-3-nano:
     command: bin/modelctl
     plugs:
       - hardware-observe
       - opengl
       - network
+
   server:
     command: bin/server.sh
     daemon: simple
