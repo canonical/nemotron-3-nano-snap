@@ -7,7 +7,7 @@ description: |
 adopt-info: version
 
 grade: devel
-confinement: strict 
+confinement: strict
 compression: lzo
 
 environment:
@@ -80,7 +80,7 @@ parts:
     organize:
       "*": (component/llama-cpp)
 
-components: 
+components:
   model-30b-a3b-q4-k-m-gguf:
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
