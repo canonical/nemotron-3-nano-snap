@@ -1,0 +1,15 @@
+name: cpu
+description: Use CPU
+vendor: Canonical Ltd
+grade: stable
+devices:
+  anyof:
+    - type: cpu
+      architecture: amd64
+    - type: cpu
+      architecture: arm64
+memory: 24G
+disk-space: 48G
+components:
+  - llama-cpp
+  - model-30b-a3b-q4-k-m-gguf

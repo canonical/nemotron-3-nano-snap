@@ -1,0 +1,3 @@
+environment:
+  # To find the model within the component's directory
+  - MODEL_FILE=$COMPONENT/Nemotron-Nano-3-30B-A3B-Q4_K_M.gguf
