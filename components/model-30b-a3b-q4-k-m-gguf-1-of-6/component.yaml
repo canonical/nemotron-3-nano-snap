@@ -1,0 +1,5 @@
+environment:
+  # Model file path is set to /tmp directory because the model is split into multiple shreds.
+  # Shreds must be located in the same directory for llama-cpp to load them correctly.
+  # The /tmp directory is writable, allowing the snap to create symbolic links to the model shreds.
+  - MODEL_FILE=/tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf

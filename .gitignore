@@ -6,3 +6,4 @@ prime/
 *.snap
 *.comp
 squashfs-root
+*.gguf

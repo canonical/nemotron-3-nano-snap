@@ -1,3 +1,0 @@
-#!/bin/bash -eux
-
-exec "$SNAP_COMPONENTS/llama-cpp/server"
