@@ -1,40 +1,46 @@
-name: nemotron-snap # you probably want to 'snapcraft register <name>'
-base: core24 # the base snap is the execution environment for this snap
-version: '0.0' # just for humans, typically '1.2+git' or '1.3.2'
-summary: Inference Snap for NemotronNano330BA3B  # 79 char long summary
+name: nemotron-3-nano
+base: core24
+summary: Inference Snap for Nemotron 3 nano
 description: |
-  This is an inference snap that lets you run NemotronNano330BA3B model using CPU.
+  This is an inference snap that lets you run Nemotron 3 nano.
 
-grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: strict # use 'strict' once you have the right plugs and slots
+adopt-info: version
+
+grade: devel
+confinement: strict
 compression: lzo
 
 environment:
-  # Set path to snap components
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
-  # To find shared libraries that are staged and moved to components
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
 
 hooks:
   install:
     plugs:
-      # For hardware detection
       - hardware-observe
       - opengl
-      - kernel-module-observe
 
 parts:
+  version:
+    plugin: dump
+    source: .
+    build-packages:
+      - git-lfs
+    override-pull: |
+      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
-    source-tag: v1.0.0-beta.24
+    source-tag: v1.0.0-beta.27
     plugin: go
     build-snaps:
       - go/1.24/stable
     stage-packages:
       - pciutils
-      - clinfo # for Intel GPU vRAM detection
+      - clinfo
     organize:
       bin/cli: bin/modelctl
+
   component-local-files:
     plugin: dump
     source: components
@@ -57,16 +63,12 @@ parts:
     plugin: dump
     organize:
       "*": bin/
+
   common-runtime-dependencies:
     plugin: nil
     stage-snaps:
-      - jq # used in server.sh
-  gemma-license:
-    source: https://ai.google.dev/gemma/terms.md.txt
-    source-type: file
-    plugin: dump
-    organize:
-      "terms.md.txt": LICENSE_TERMS.md
+      - jq
+
   llama-cpp:
     plugin: dump
     source: 
@@ -81,7 +83,6 @@ parts:
     stage-packages:
       - libgomp1
     organize:
-      # move everything, including the staged packages
       "*": (component/llama-cpp)
   
   notice:
@@ -142,12 +143,45 @@ apps:
       - hardware-observe
       - opengl
 
-components: 
-  nemotoron-nano3-30b:
+components:
+  model-30b-a3b-q4-k-m-gguf-1-of-6: &model
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
-    description: 30B parameter LLM model in GGUF format optimized for CPU inference
+    description: Model weights for NVIDIA Nemotron 3 Nano with 30B (3.5B active) parameters in GGUF format
+
+  model-30b-a3b-q4-k-m-gguf-2-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-3-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-4-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-5-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-6-of-6:
+    <<: *model
+
   llama-cpp:
     type: standard
     summary: llama.cpp HTTP server
     description: Optimized for inference on CPUs
+
+apps:
+  nemotron-3-nano:
+    command: bin/modelctl
+    plugs:
+      - hardware-observe
+      - opengl
+      - network
+
+  server:
+    command: bin/server.sh
+    daemon: simple
+    plugs:
+      - network-bind
+      - hardware-observe
+      - opengl
+
