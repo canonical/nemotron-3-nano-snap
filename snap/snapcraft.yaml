@@ -74,6 +74,30 @@ parts:
       - libgomp1
     organize:
       "*": (component/llama-cpp)
+  
+  llama-cpp-license:
+    plugin: dump
+    source: https://github.com/ggerganov/llama.cpp.git
+    source-tag: b7731
+    source-depth: 1
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp
+      mkdir -p $license_dir
+      cp LICENSE $license_dir/
+      cp -r licenses/* $license_dir/
+  
+  notice:
+    plugin: nil
+    source: NOTICE
+    source-type: file
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc
+      mkdir -p $license_dir
+      cp NOTICE $license_dir/
+      # Add license files referenced in NOTICE
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
+
 
 components:
   model-30b-a3b-q4-k-m-gguf:
