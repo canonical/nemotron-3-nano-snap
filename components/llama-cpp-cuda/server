@@ -1,0 +1,11 @@
+#!/bin/bash -eux
+
+port="$(modelctl get http.port)"
+host="$(modelctl get http.host)"
+
+exec llama-server \
+  --model "$MODEL_FILE" \
+  --port "$port" \
+  --host "$host" \
+  --no-warmup \
+  "$@"

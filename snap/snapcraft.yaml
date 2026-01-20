@@ -166,8 +166,13 @@ components:
 
   llama-cpp:
     type: standard
-    summary: llama.cpp HTTP server
-    description: Optimized for inference on CPUs
+    summary: llama.cpp using default CPU instruction sets
+    description: LLM inference in C/C++
+  
+  llama-cpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++
 
 apps:
   nemotron-3-nano:
