@@ -2,29 +2,47 @@
 
 # Create symbolic links to model shreds to be found in components subdirectory in /tmp folder.
 # Create them only if they do not exist, perform a check before creating them.
-
+echo "Creating symbolic links to model shreds in /tmp folder..."
 if [ ! -f /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf ]; then
     ln -s $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-1-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf
+    echo "Symbolic link created for shred 1."
+else
+    echo "Symbolic link for shred 1 already exists."
 fi
 
 if [ ! -f /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00002-of-00006.gguf ]; then
     ln -s $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-2-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00002-of-00006.gguf /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00002-of-00006.gguf
+    echo "Symbolic link created for shred 2."
+else
+    echo "Symbolic link for shred 2 already exists."
 fi
 
 if [ ! -f /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00003-of-00006.gguf ]; then
     ln -s $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-3-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00003-of-00006.gguf /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00003-of-00006.gguf
+    echo "Symbolic link created for shred 3."
+else
+    echo "Symbolic link for shred 3 already exists."
 fi
 
 if [ ! -f /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00004-of-00006.gguf ]; then
     ln -s $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-4-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00004-of-00006.gguf /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00004-of-00006.gguf
+    echo "Symbolic link created for shred 4."
+else
+    echo "Symbolic link for shred 4 already exists."
 fi
 
 if [ ! -f /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00005-of-00006.gguf ]; then
     ln -s $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-5-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00005-of-00006.gguf /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00005-of-00006.gguf
+    echo "Symbolic link created for shred 5."
+else
+    echo "Symbolic link for shred 5 already exists."
 fi
 
 if [ ! -f /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf ]; then
     ln -s $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-6-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf /tmp/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf
+    echo "Symbolic link created for shred 6."
+else
+    echo "Symbolic link for shred 6 already exists."
 fi
 
 exec "$SNAP_COMPONENTS/llama-cpp/server"

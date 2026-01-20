@@ -7,3 +7,4 @@ prime/
 *.comp
 squashfs-root
 *.gguf
+!components/model-30b-a3b-q4-k-m-gguf*/*.gguf
