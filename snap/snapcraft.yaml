@@ -91,7 +91,7 @@ parts:
       cp NOTICE $license_dir/
       # Add license files referenced in NOTICE
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
-      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
 
 
 components:
