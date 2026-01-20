@@ -3,6 +3,7 @@
 port="$(modelctl get http.port)"
 host="$(modelctl get http.host)"
 
+# Adding --no-warmup to skip the model warmup phase during server startup in order to reduce resource usage if not needed.
 exec llama-server \
   --model "$MODEL_FILE" \
   --port "$port" \
