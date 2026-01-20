@@ -1,0 +1,6 @@
+components/model-30b-a3b-q4-k-m-gguf-6-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf filter=lfs diff=lfs merge=lfs -text
+components/model-30b-a3b-q4-k-m-gguf-5-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00005-of-00006.gguf filter=lfs diff=lfs merge=lfs -text
+components/model-30b-a3b-q4-k-m-gguf-4-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00004-of-00006.gguf filter=lfs diff=lfs merge=lfs -text
+components/model-30b-a3b-q4-k-m-gguf-3-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00003-of-00006.gguf filter=lfs diff=lfs merge=lfs -text
+components/model-30b-a3b-q4-k-m-gguf-2-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00002-of-00006.gguf filter=lfs diff=lfs merge=lfs -text
+components/model-30b-a3b-q4-k-m-gguf-1-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf filter=lfs diff=lfs merge=lfs -text

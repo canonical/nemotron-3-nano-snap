@@ -46,14 +46,18 @@ parts:
     source: components
     organize:
       "llama-cpp": (component/llama-cpp)
-      "model-30b-a3b-q4-k-m-gguf": (component/model-30b-a3b-q4-k-m-gguf)
-
+      "model-30b-a3b-q4-k-m-gguf-1-of-6": (component/model-30b-a3b-q4-k-m-gguf-1-of-6)
+      "model-30b-a3b-q4-k-m-gguf-2-of-6": (component/model-30b-a3b-q4-k-m-gguf-2-of-6)
+      "model-30b-a3b-q4-k-m-gguf-3-of-6": (component/model-30b-a3b-q4-k-m-gguf-3-of-6)
+      "model-30b-a3b-q4-k-m-gguf-4-of-6": (component/model-30b-a3b-q4-k-m-gguf-4-of-6)
+      "model-30b-a3b-q4-k-m-gguf-5-of-6": (component/model-30b-a3b-q4-k-m-gguf-5-of-6)
+      "model-30b-a3b-q4-k-m-gguf-6-of-6": (component/model-30b-a3b-q4-k-m-gguf-6-of-6)
+  
   engines:
     source: engines
     plugin: dump
     organize:
       "*": engines/
-
   scripts:
     source: scripts
     plugin: dump
@@ -95,10 +99,25 @@ parts:
 
 
 components:
-  model-30b-a3b-q4-k-m-gguf:
+  model-30b-a3b-q4-k-m-gguf-1-of-6: &model
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
     description: Model weights for NVIDIA Nemotron 3 Nano with 30B (3.5B active) parameters in GGUF format
+
+  model-30b-a3b-q4-k-m-gguf-2-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-3-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-4-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-5-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-6-of-6:
+    <<: *model
 
   llama-cpp:
     type: standard
