@@ -85,7 +85,23 @@ parts:
       - libgomp1
     organize:
       "*": (component/llama-cpp)
-  
+    
+  llama-cpp-cuda:
+    plugin: dump
+    source: 
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-arm64+cuda12.tar.gz
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
+
+      craftctl default
+    stage-packages:
+      - libgomp1
+    organize:
+      "*": (component/llama-cpp-cuda)
+        
   notice:
     plugin: nil
     source: NOTICE
