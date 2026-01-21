@@ -98,52 +98,6 @@ parts:
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
 
-
-components:
-  model-30b-a3b-q4-k-m-gguf-1-of-6: &model
-    type: standard
-    summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
-    description: Model weights for NVIDIA Nemotron 3 Nano with 30B (3.5B active) parameters in GGUF format
-
-  model-30b-a3b-q4-k-m-gguf-2-of-6:
-    <<: *model
-
-  model-30b-a3b-q4-k-m-gguf-3-of-6:
-    <<: *model
-
-  model-30b-a3b-q4-k-m-gguf-4-of-6:
-    <<: *model
-
-  model-30b-a3b-q4-k-m-gguf-5-of-6:
-    <<: *model
-
-  model-30b-a3b-q4-k-m-gguf-6-of-6:
-    <<: *model
-
-  llama-cpp:
-    type: standard
-    summary: llama.cpp HTTP server
-    description: Optimized for inference on CPUs
-
-apps:
-  nemotron-snap:
-    command: bin/modelctl
-    plugs:
-      # For hardware detection
-      - hardware-observe
-      - opengl
-      # To access server over network socket
-      - network
-  server:
-    command: bin/server.sh
-    daemon: simple
-    plugs:
-      # Needed for server app
-      - network-bind
-      # For inference and when running some modelctl commands
-      - hardware-observe
-      - opengl
-
 components:
   model-30b-a3b-q4-k-m-gguf-1-of-6: &model
     type: standard
