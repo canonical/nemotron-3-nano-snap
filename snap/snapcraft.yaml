@@ -14,6 +14,11 @@ environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
 
+plugs:
+  # To allow side-loading models into server (root daemon) from user home directory
+  home:
+    read: all
+
 hooks:
   install:
     plugs:
@@ -139,4 +144,5 @@ apps:
       - network-bind
       - hardware-observe
       - opengl
+      - home
 
