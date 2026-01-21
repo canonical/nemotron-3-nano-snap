@@ -1,0 +1,15 @@
+#!/bin/bash -eu
+
+# Create symbolic links to model shreds to be found in components subdirectory in /tmp/nemotron-3-nano-shards folder.
+# Create them only if they do not exist, perform a check before creating them.
+SHARD_DIR="/tmp/nemotron-3-nano-shards"
+[ -d "$SHARD_DIR" ] && rm -r "$SHARD_DIR"
+mkdir -p "$SHARD_DIR"
+
+for i in {1..6}; do
+    SHARD_NUM=$(printf "%05d" $i)
+    SHARD_FILE="Nemotron-Nano-3-30B-A3B-Q4_K_M-${SHARD_NUM}-of-00006.gguf"
+    TARGET_PATH="$SHARD_DIR/$SHARD_FILE"
+    SOURCE_PATH="$SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-${i}-of-6/$SHARD_FILE"
+    ln -s "$SOURCE_PATH" "$TARGET_PATH"
+done
