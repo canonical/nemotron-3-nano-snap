@@ -23,3 +23,5 @@ Build the snap and its component:
 ```shell
 snapcraft pack -v
 ```
+
+Refer to the `./dev` directory for additional development tools.
