@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 # Create symbolic links to model shreds to be found in components subdirectory in /tmp/nemotron-3-nano-shards folder.
 # Create them only if they do not exist, perform a check before creating them.
