@@ -46,6 +46,7 @@ parts:
     source: components
     organize:
       "llama-cpp": (component/llama-cpp)
+      "llama-cpp-cuda": (component/llama-cpp-cuda)
       "model-30b-a3b-q4-k-m-gguf-1-of-6": (component/model-30b-a3b-q4-k-m-gguf-1-of-6)
       "model-30b-a3b-q4-k-m-gguf-2-of-6": (component/model-30b-a3b-q4-k-m-gguf-2-of-6)
       "model-30b-a3b-q4-k-m-gguf-3-of-6": (component/model-30b-a3b-q4-k-m-gguf-3-of-6)
@@ -84,7 +85,23 @@ parts:
       - libgomp1
     organize:
       "*": (component/llama-cpp)
-  
+    
+  llama-cpp-cuda:
+    plugin: dump
+    source: 
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7731/llamacpp-arm64+cuda12.tar.gz
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
+
+      craftctl default
+    stage-packages:
+      - libgomp1
+    organize:
+      "*": (component/llama-cpp-cuda)
+        
   notice:
     plugin: nil
     source: NOTICE
@@ -96,7 +113,6 @@ parts:
       # Add license files referenced in NOTICE
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
-
 
 components:
   model-30b-a3b-q4-k-m-gguf-1-of-6: &model
@@ -121,8 +137,13 @@ components:
 
   llama-cpp:
     type: standard
-    summary: llama.cpp HTTP server
-    description: Optimized for inference on CPUs
+    summary: llama.cpp using default CPU instruction sets
+    description: LLM inference in C/C++
+  
+  llama-cpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++
 
 apps:
   nemotron-3-nano:
