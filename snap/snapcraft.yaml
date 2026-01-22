@@ -69,14 +69,12 @@ parts:
       set +x # reduce noise
 
       # Bypassing the usual part lifecycle saves disk space and time when dealing with large files
-      # Copy model files directly from the project into the components respective prime directories
+      # Copy model files directly from the project into the respective component's prime directory
       for i in {1..6}; do
-        source_dir="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
-        source_file="Nemotron-Nano-3-30B-A3B-Q4_K_M-0000$i-of-00006.gguf"
-
+        source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
         target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
 
-        cp -v $source_dir/$source_file ${!target}
+        cp -v $source/* ${!target}/
       done
 
   llama-cpp:
