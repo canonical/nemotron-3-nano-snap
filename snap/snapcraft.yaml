@@ -45,40 +45,13 @@ parts:
       - clinfo
     organize:
       bin/cli: bin/modelctl
-
-  # TODO: reorder parts
-  llama-cpp-local-files:
-    plugin: dump
-    source: components/llama-cpp
-    organize:
-      "*": (component/llama-cpp)
-
-  llama-cpp-cuda-local-files:
-    plugin: dump
-    source: components/llama-cpp-cuda
-    organize:
-      "*": (component/llama-cpp-cuda)
-  
-  model-30b-a3b-q4-k-m-gguf:
-    plugin: nil
-    override-prime: |
-      set +x # reduce noise
-
-      # Copy model files directly into the prime directory to reduce one set of copies
-      for i in {1..6}; do
-        source_dir="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
-        source_file="Nemotron-Nano-3-30B-A3B-Q4_K_M-0000$i-of-00006.gguf"
-
-        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
-
-        cp -v $source_dir/$source_file ${!target}
-      done
-      
+        
   engines:
     source: engines
     plugin: dump
     organize:
       "*": engines/
+  
   scripts:
     source: scripts
     plugin: dump
@@ -89,6 +62,22 @@ parts:
     plugin: nil
     stage-snaps:
       - jq
+
+  model-30b-a3b-q4-k-m-gguf:
+    plugin: nil
+    override-prime: |
+      set +x # reduce noise
+
+      # Bypassing the usual part lifecycle saves disk space and time when dealing with large files
+      # Copy model files directly from the project into the components respective prime directories
+      for i in {1..6}; do
+        source_dir="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
+        source_file="Nemotron-Nano-3-30B-A3B-Q4_K_M-0000$i-of-00006.gguf"
+
+        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
+
+        cp -v $source_dir/$source_file ${!target}
+      done
 
   llama-cpp:
     plugin: dump
@@ -103,6 +92,12 @@ parts:
       craftctl default
     stage-packages:
       - libgomp1
+    organize:
+      "*": (component/llama-cpp)
+  
+  llama-cpp-local-files:
+    plugin: dump
+    source: components/llama-cpp
     organize:
       "*": (component/llama-cpp)
     
@@ -121,7 +116,13 @@ parts:
       - libgomp1
     organize:
       "*": (component/llama-cpp-cuda)
-        
+
+  llama-cpp-cuda-local-files:
+    plugin: dump
+    source: components/llama-cpp-cuda
+    organize:
+      "*": (component/llama-cpp-cuda)
+
   notice:
     plugin: nil
     source: NOTICE
