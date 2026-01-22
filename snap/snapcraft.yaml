@@ -32,11 +32,7 @@ parts:
     build-packages:
       - git-lfs
     override-pull: |
-      df -h
       craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always)"
-      df -h
-      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
-      df -h
 
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
@@ -66,13 +62,14 @@ parts:
   model-30b-a3b-q4-k-m-gguf:
     plugin: nil
     override-prime: |
+      set +x # reduce noise
+
       # Copy model files directly into the prime directory to reduce one set of copies
-      set +x # disable xtrace to reduce noise
       for i in {1..6}; do
-        df -h
-        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
         source_dir="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
         source_file="Nemotron-Nano-3-30B-A3B-Q4_K_M-0000$i-of-00006.gguf"
+
+        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
 
         cp -v $source_dir/$source_file ${!target}
       done
