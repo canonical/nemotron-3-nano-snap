@@ -43,6 +43,11 @@ parts:
     stage-packages:
       - pciutils
       - clinfo
+    override-build: |
+      craftctl default
+
+      # For tab completion
+      ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/nemotron-3-nano
     organize:
       bin/cli: bin/modelctl
 
@@ -152,7 +157,8 @@ components:
 
 apps:
   nemotron-3-nano:
-    command: bin/modelctl
+    command: bin/nemotron-3-nano
+    completer: bin/completion.bash
     plugs:
       - hardware-observe
       - opengl
