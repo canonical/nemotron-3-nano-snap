@@ -32,7 +32,9 @@ parts:
     build-packages:
       - git-lfs
     override-pull: |
-      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+      df -h
+      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always)"
+      df -h
 
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git

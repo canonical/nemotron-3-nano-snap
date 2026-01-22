@@ -4,9 +4,5 @@ set -x
 
 df -h
 # Remove LFS object copies to reduce disk usage
-#git lfs prune --force
-#git gc --prune=now
-
-rm -r .git/lfs/objects
-
+git lfs prune --force
 df -h
