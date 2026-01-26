@@ -1,4 +1,6 @@
 # Nemotron 3 Nano snap
+[![nemotron-3-nano](https://snapcraft.io/nemotron-3-nano/badge.svg)](https://snapcraft.io/nemotron-3-nano)
+
 This snap installs a hardware-optimized engine for inference with the [Nemotron 3 Nano](https://build.nvidia.com/nvidia/nemotron-3-nano-30b-a3b/modelcard)
 large language model with reasoning capabilities built with a hybrid Mixture-of-Experts (MoE) architecture.
 
