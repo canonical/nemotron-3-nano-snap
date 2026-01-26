@@ -32,7 +32,7 @@ parts:
     build-packages:
       - git-lfs
     override-pull: |
-      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always)"
 
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
@@ -50,25 +50,13 @@ parts:
       ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/nemotron-3-nano
     organize:
       bin/cli: bin/modelctl
-
-  component-local-files:
-    plugin: dump
-    source: components
-    organize:
-      "llama-cpp": (component/llama-cpp)
-      "llama-cpp-cuda": (component/llama-cpp-cuda)
-      "model-30b-a3b-q4-k-m-gguf-1-of-6": (component/model-30b-a3b-q4-k-m-gguf-1-of-6)
-      "model-30b-a3b-q4-k-m-gguf-2-of-6": (component/model-30b-a3b-q4-k-m-gguf-2-of-6)
-      "model-30b-a3b-q4-k-m-gguf-3-of-6": (component/model-30b-a3b-q4-k-m-gguf-3-of-6)
-      "model-30b-a3b-q4-k-m-gguf-4-of-6": (component/model-30b-a3b-q4-k-m-gguf-4-of-6)
-      "model-30b-a3b-q4-k-m-gguf-5-of-6": (component/model-30b-a3b-q4-k-m-gguf-5-of-6)
-      "model-30b-a3b-q4-k-m-gguf-6-of-6": (component/model-30b-a3b-q4-k-m-gguf-6-of-6)
-  
+        
   engines:
     source: engines
     plugin: dump
     organize:
       "*": engines/
+  
   scripts:
     source: scripts
     plugin: dump
@@ -79,6 +67,20 @@ parts:
     plugin: nil
     stage-snaps:
       - jq
+
+  model-30b-a3b-q4-k-m-gguf:
+    plugin: nil
+    override-prime: |
+      set +x # reduce noise
+
+      # Bypassing the usual part lifecycle saves disk space and time when dealing with large files
+      # Copy model files directly from the project into the respective component's prime directory
+      for i in {1..6}; do
+        source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
+        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
+
+        cp -v $source/* ${!target}/
+      done
 
   llama-cpp:
     plugin: dump
@@ -93,6 +95,12 @@ parts:
       craftctl default
     stage-packages:
       - libgomp1
+    organize:
+      "*": (component/llama-cpp)
+  
+  llama-cpp-local-files:
+    plugin: dump
+    source: components/llama-cpp
     organize:
       "*": (component/llama-cpp)
     
@@ -111,7 +119,13 @@ parts:
       - libgomp1
     organize:
       "*": (component/llama-cpp-cuda)
-        
+
+  llama-cpp-cuda-local-files:
+    plugin: dump
+    source: components/llama-cpp-cuda
+    organize:
+      "*": (component/llama-cpp-cuda)
+
   notice:
     plugin: nil
     source: NOTICE
