@@ -15,9 +15,4 @@ memory: 24G
 disk-space: 48G
 components:
   - llama-cpp-cuda
-  - model-30b-a3b-q4-k-m-gguf-1-of-6
-  - model-30b-a3b-q4-k-m-gguf-2-of-6
-  - model-30b-a3b-q4-k-m-gguf-3-of-6
-  - model-30b-a3b-q4-k-m-gguf-4-of-6
-  - model-30b-a3b-q4-k-m-gguf-5-of-6
-  - model-30b-a3b-q4-k-m-gguf-6-of-6
+  - model-30b-a3b-q4-k-m-gguf

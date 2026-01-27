@@ -1,4 +1,4 @@
 #!/bin/bash -eu
 
-$SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-1-of-6/init
+$SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf/init
 exec "$SNAP_COMPONENTS/llama-cpp/server"
