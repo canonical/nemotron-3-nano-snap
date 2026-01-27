@@ -10,6 +10,6 @@ for i in {1..6}; do
     SHARD_NUM=$(printf "%05d" $i)
     SHARD_FILE="Nemotron-Nano-3-30B-A3B-Q4_K_M-${SHARD_NUM}-of-00006.gguf"
     TARGET_PATH="$SHARD_DIR/$SHARD_FILE"
-    SOURCE_PATH="$SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf/$SHARD_FILE"
+    SOURCE_PATH="$SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-${i}-of-6/$SHARD_FILE"
     ln -s "$SOURCE_PATH" "$TARGET_PATH"
 done

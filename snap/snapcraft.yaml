@@ -75,10 +75,28 @@ parts:
 
       # Bypassing the usual part lifecycle saves disk space and time when dealing with large files
       # Copy model files directly from the project into the respective component's prime directory
-      source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf"
-      target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_PRIME"
+      for i in {1..6}; do
+        source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-0000${i}-of-00006.gguf"
+        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
 
-      cp -v $source/* ${!target}/
+        cp -v "$source" "${!target}/"
+
+        if [ "$i" -eq 1 ]; then
+          # Copy any other non-gguf files from the components directory
+          for f in "$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf"/*; do
+            if [ -f "$f" ]; then
+              case "$f" in
+                *.gguf) ;;
+                *) cp -v "$f" "${!target}/" ;;
+              esac
+            fi
+          done
+        else
+          # For components other than the first, create an empty component.yaml
+          # to indicate these are not the primary GGUF model component.
+          touch "${!target}/component.yaml"
+        fi
+      done
 
   llama-cpp:
     plugin: dump
@@ -137,10 +155,25 @@ parts:
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
 
 components:
-  model-30b-a3b-q4-k-m-gguf:
+  model-30b-a3b-q4-k-m-gguf-1-of-6: &model
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
     description: Model weights for NVIDIA Nemotron 3 Nano with 30B (3.5B active) parameters in GGUF format
+
+  model-30b-a3b-q4-k-m-gguf-2-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-3-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-4-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-5-of-6:
+    <<: *model
+
+  model-30b-a3b-q4-k-m-gguf-6-of-6:
+    <<: *model
 
   llama-cpp:
     type: standard
