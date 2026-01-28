@@ -92,9 +92,9 @@ parts:
             fi
           done
         else
-          # For components other than the first, create an empty component.yaml
-          # to indicate these are not the primary GGUF model component.
-          touch "${!target}/component.yaml"
+          # Each component must include a component.yaml config file.
+          # For components other than the first, create an empy one:
+          echo "# No config" > "${!target}/component.yaml"
         fi
       done
 

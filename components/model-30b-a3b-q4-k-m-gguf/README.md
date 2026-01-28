@@ -10,11 +10,7 @@ wget https://huggingface.co/ggml-org/Nemotron-Nano-3-30B-A3B-GGUF/resolve/main/N
 ```
 
 ## Sharding
-Nemotron 3 Nano model has been split into 6 shards and placed in the component directory:
-
-- components/model-30b-a3b-q4-k-m-gguf
-
-In order to create shards, the original model file was split using the `llama-gguf-split` tool as follows:
+Nemotron 3 Nano model has been split into 6 shards and placed in the current directory.
 
 ```shell
 llama-gguf-split --split-max-size 5G Nemotron-Nano-3-30B-A3B-Q4_K_M.gguf Nemotron-Nano-3-30B-A3B-Q4_K_M
