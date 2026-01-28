@@ -76,10 +76,26 @@ parts:
       # Bypassing the usual part lifecycle saves disk space and time when dealing with large files
       # Copy model files directly from the project into the respective component's prime directory
       for i in {1..6}; do
-        source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf-$i-of-6"
+        source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-0000${i}-of-00006.gguf"
         target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
 
-        cp -v $source/* ${!target}/
+        cp -v "$source" "${!target}/"
+
+        if [ "$i" -eq 1 ]; then
+          # Copy any other non-gguf files from the components directory
+          for f in "$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf"/*; do
+            if [ -f "$f" ]; then
+              case "$f" in
+                *.gguf) ;;
+                *) cp -v "$f" "${!target}/" ;;
+              esac
+            fi
+          done
+        else
+          # Each component must include a component.yaml config file.
+          # For components other than the first, create an empty one:
+          echo "# No config" > "${!target}/component.yaml"
+        fi
       done
 
   llama-cpp:
