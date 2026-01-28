@@ -93,7 +93,7 @@ parts:
           done
         else
           # Each component must include a component.yaml config file.
-          # For components other than the first, create an empy one:
+          # For components other than the first, create an empty one:
           echo "# No config" > "${!target}/component.yaml"
         fi
       done
