@@ -60,7 +60,6 @@ parts:
       ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/nemotron-3-nano
     organize:
       bin/cli: bin/modelctl
-
     prime:
       # Exclude nvidia icd to avoid clinfo from looking up properties for nvidia GPUs.
       # See: https://github.com/canonical/inference-snaps/issues/148
