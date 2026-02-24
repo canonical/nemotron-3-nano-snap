@@ -24,7 +24,7 @@
         "^snap/snapcraft\\.yaml$"
       ],
       "matchStrings": [
-        "https://github\\.com/jpm-canonical/llama\\.cpp-builds/releases/download/(?<currentValue>[^/]+)/llamacpp",
+        "https://github\\.com/jpm-canonical/llama\\.cpp-builds/releases/download/(?<currentValue>[^/]+)/llamacpp"
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "jpm-canonical/llama.cpp-builds",
