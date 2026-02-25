@@ -21,3 +21,5 @@ components:
   - model-30b-a3b-q4-k-m-gguf-4-of-6
   - model-30b-a3b-q4-k-m-gguf-5-of-6
   - model-30b-a3b-q4-k-m-gguf-6-of-6
+configurations:
+  sleep-idle-seconds: 600
