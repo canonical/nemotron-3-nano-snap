@@ -2,6 +2,7 @@
 
 port="$(modelctl get http.port)"
 host="$(modelctl get http.host)"
+sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
 
 # Adding --no-warmup to skip the model warmup phase during server startup in order to reduce resource usage if not needed.
 exec llama-server \
@@ -9,4 +10,5 @@ exec llama-server \
   --port "$port" \
   --host "$host" \
   --no-warmup \
+  --sleep-idle-seconds "$sleep_idle_seconds" \
   "$@"
