@@ -1,4 +1,7 @@
 #!/bin/bash -eu
 
+sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
+
 $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-1-of-6/init
-exec "$SNAP_COMPONENTS/llama-cpp-cuda/server"
+
+exec "$SNAP_COMPONENTS/llama-cpp-cuda/server" --sleep-idle-seconds "$sleep_idle_seconds"
