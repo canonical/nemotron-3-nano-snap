@@ -79,7 +79,7 @@ parts:
 
   common-runtime-dependencies:
     plugin: nil
-    stage-snaps:
+    stage-packages:
       - jq
 
   model-30b-a3b-q4-k-m-gguf:
