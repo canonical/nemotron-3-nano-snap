@@ -69,13 +69,11 @@ parts:
   scripts:
     source: scripts
     plugin: dump
-    organize:
-      "*": bin/
-
-  common-runtime-dependencies:
-    plugin: nil
     stage-packages:
       - jq
+    organize:
+      "server.sh": bin/
+      "completion.bash": bin/
 
   model-30b-a3b-q4-k-m-gguf:
     plugin: nil
