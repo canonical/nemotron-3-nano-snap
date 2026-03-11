@@ -59,11 +59,6 @@ parts:
     stage-packages:
       - pciutils # lspci
       - nvidia-utils-580 # nvidia-smi, used for NVIDIA vRAM and CUDA Capability detection
-      - clinfo # used for Intel GPU vRAM detection. It depends on intel-opencl-icd which isn't included in the snap.
-    prime:
-      # Exclude nvidia icd to avoid clinfo from looking up properties for nvidia GPUs.
-      # See: https://github.com/canonical/inference-snaps/issues/148
-      - -etc/OpenCL/vendors/nvidia.icd
 
   engines:
     source: engines
