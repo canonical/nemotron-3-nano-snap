@@ -44,27 +44,27 @@ parts:
       craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always)"
 
   cli:
-    source: https://github.com/canonical/inference-snaps-cli.git
-    source-tag: v1.0.0-beta.32
-    plugin: go
-    build-snaps:
-      - go/1.24/stable
-    stage-packages:
-      - pciutils
-      - nvidia-utils-580 # for Nvidia vRAM and Cuda Capability detection
-      - clinfo
+    source:
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.33/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.33/inference-snaps-cli-linux-arm64.tar.xz
+    plugin: dump
     override-build: |
-      craftctl default
+      mkdir -p bin
+      mv cli bin/modelctl
 
       # For tab completion
-      ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/nemotron-3-nano
-    organize:
-      bin/cli: bin/modelctl
+      ln --symbolic ./modelctl bin/nemotron-3-nano
+
+      craftctl default
+    stage-packages:
+      - pciutils # lspci
+      - nvidia-utils-580 # nvidia-smi, used for NVIDIA vRAM and CUDA Capability detection
+      - clinfo # used for Intel GPU vRAM detection. It depends on intel-opencl-icd which isn't included in the snap.
     prime:
       # Exclude nvidia icd to avoid clinfo from looking up properties for nvidia GPUs.
       # See: https://github.com/canonical/inference-snaps/issues/148
       - -etc/OpenCL/vendors/nvidia.icd
-        
+
   engines:
     source: engines
     plugin: dump
