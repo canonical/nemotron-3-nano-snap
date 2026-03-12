@@ -16,7 +16,7 @@ large language model with reasoning capabilities built with a hybrid Mixture-of-
 
 Clone this repo with its submodules:
 ```shell
-git clone https://github.com/canonical/nemotron-3-nano
+git clone https://github.com/canonical/nemotron-3-nano-snap
 ```
 
 Prepare the required models by following the instructions for each model, under the [components](./components) directory. 
