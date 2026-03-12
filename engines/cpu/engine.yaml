@@ -1,5 +1,5 @@
 name: cpu
-description: Use CPU
+description: Optimized for a range of CPU micro-architectures
 vendor: Canonical Ltd
 grade: stable
 devices:
