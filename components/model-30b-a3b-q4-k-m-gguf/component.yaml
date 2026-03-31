@@ -11,7 +11,6 @@ layout:
     symlink: $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-5-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00005-of-00006.gguf
   /tmp/nemotron-3-nano-shards/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf:
     symlink: $SNAP_COMPONENTS/model-30b-a3b-q4-k-m-gguf-6-of-6/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf
-  
 
 environment:
   # The model is split into multiple shards, maintained in individual component directories.
