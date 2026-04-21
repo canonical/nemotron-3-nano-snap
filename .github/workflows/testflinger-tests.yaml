@@ -15,7 +15,7 @@ on:
         type: string
 
 jobs:
-  test-text-prompt:
+  test-multimodal-prompt:
     name: nemotron-3-nano ${{ matrix.jobs.select-engine }}
     strategy:
       fail-fast: false
