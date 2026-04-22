@@ -1,5 +1,9 @@
+servers:
+  openai:
+    protocol: http
+    base-path: /v1
+
 environment:
-  - OPENAI_BASE_PATH=/v1
   # Add llama.cpp binaries
   - PATH=$PATH:$COMPONENT/bin
   # Add llama.cpp-built shared libraries
