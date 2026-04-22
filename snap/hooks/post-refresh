@@ -12,10 +12,10 @@ exec 2> >(logger --stderr --priority error --tag=$tag)
 # If the active engine has been removed, another engine will be auto selected.
 # The automatic selection requires access to hardware information on the system.
 if snapctl is-connected hardware-observe; then
-    modelctl use-engine --fix --assume-yes
+    modelctl use-engine --fix --assume-yes --verbose
 elif lscpu -V &> /dev/null; then
     echo "Able to access hardware info without hardware-observe interface connection: assuming dev mode installation."
-    modelctl use-engine --fix --assume-yes
+    modelctl use-engine --fix --assume-yes --verbose
 else
     echo "hardware-observe interface not connected. Skip fixing the active engine."
 fi
