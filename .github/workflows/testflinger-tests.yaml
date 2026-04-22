@@ -1,4 +1,4 @@
-name: nemotron-3-nano
+name: Testflinger tests
 
 on:
   workflow_call:
