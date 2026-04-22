@@ -1,5 +1,5 @@
 name: nvidia-gpu
-description: Use CUDA for inference on Nvidia GPUs
+description: Optimized for inference on Nvidia GPUs, using CUDA
 vendor: Canonical Ltd
 grade: stable
 devices:
