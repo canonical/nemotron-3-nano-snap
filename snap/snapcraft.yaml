@@ -10,18 +10,18 @@ grade: stable
 confinement: strict
 compression: lzo
 
+assumes:
+  - snapd2.68 # for components support
+
 environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
   OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
 
 layout:
-  # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
-  /etc/OpenCL/vendors:
-    bind: $SNAP/etc/OpenCL/vendors
-  # Intel icd files use an absolute path to Intel OpenCL shared objects. Use a layout to mount the so files at the expected location
-  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl:
-    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
+  # Under wsl the libraries are expected in /usr/lib/wsl
+  /usr/lib/wsl:
+    bind: $SNAP_COMMON/usr/lib/wsl
 
 plugs:
   # To allow side-loading models into server (root daemon) from user home directory
@@ -30,9 +30,12 @@ plugs:
 
 hooks:
   install:
-    plugs:
+    plugs: &install-plugs
+      # For hardware detection
       - hardware-observe
       - opengl
+  post-refresh:
+    plugs: *install-plugs
 
 parts:
   version:
@@ -42,6 +45,22 @@ parts:
       - git-lfs
     override-pull: |
       craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always)"
+
+  scripts:
+    source: scripts
+    plugin: dump
+    stage-packages:
+      - jq
+    organize:
+      "completion.bash": bin/
+      "server.sh": bin/
+      "server-webui.sh": bin/
+
+  engines:
+    source: engines
+    plugin: dump
+    organize:
+      "*": engines/
 
   cli:
     source:
@@ -56,24 +75,64 @@ parts:
       ln --symbolic ./modelctl bin/nemotron-3-nano
 
       craftctl default
+
+  cli-dependencies:
+    plugin: nil
     stage-packages:
       - pciutils # lspci
-      - nvidia-utils-580 # nvidia-smi, used for NVIDIA vRAM and CUDA Capability detection
 
-  engines:
-    source: engines
+  # Used for NVIDIA vRAM and CUDA Capability detection.
+  # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
+  nvidia-smi:
+    plugin: nil
+    build-packages:
+      - nvidia-utils-580
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp /usr/bin/nvidia-smi $CRAFT_PART_INSTALL/usr/bin/
+      
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/nvidia-utils-580/
+      mkdir -p $license_dir
+      cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
+
+  webui:
     plugin: dump
+    source: https://github.com/canonical/inference-snaps-webui/releases/download/v1.0.0-beta.4/inference-snaps-webui.tar.xz
     organize:
-      "*": engines/
-  
-  scripts:
-    source: scripts
+      "*": webui/
+
+  local-component-files:
     plugin: dump
+    source: components
+    organize:
+      "llama-cpp/*": (component/llama-cpp)
+      "llama-cpp-cuda/*": (component/llama-cpp-cuda)
+      # Add other components here
+    prime:
+      # Exclude everything not explicitly organized
+      - -*
+
+  llama-cpp:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
     stage-packages:
-      - jq
+      - libgomp1
     organize:
-      "server.sh": bin/
-      "completion.bash": bin/
+      # move everything, including the staged packages
+      "*": (component/llama-cpp)
+
+  llama-cpp-cuda:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
+    stage-packages:
+      - libgomp1
+    organize:
+      # move everything, including the staged packages
+      "*": (component/llama-cpp-cuda)
 
   model-30b-a3b-q4-k-m-gguf:
     plugin: nil
@@ -105,50 +164,10 @@ parts:
         fi
       done
 
-  llama-cpp:
-    plugin: dump
-    source: 
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
-    override-build: |
-      # Move license files to be included in the snap, not the component
-      mkdir -p $CRAFT_PRIME/usr/share/doc/
-      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp
 
-      craftctl default
-    stage-packages:
-      - libgomp1
-    organize:
-      "*": (component/llama-cpp)
-  
-  llama-cpp-local-files:
-    plugin: dump
-    source: components/llama-cpp
-    organize:
-      "*": (component/llama-cpp)
-    
-  llama-cpp-cuda:
-    plugin: dump
-    source: 
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
-    override-build: |
-      # Move license files to be included in the snap, not the component
-      mkdir -p $CRAFT_PRIME/usr/share/doc/
-      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
-
-      craftctl default
-    stage-packages:
-      - libgomp1
-    organize:
-      "*": (component/llama-cpp-cuda)
-
-  llama-cpp-cuda-local-files:
-    plugin: dump
-    source: components/llama-cpp-cuda
-    organize:
-      "*": (component/llama-cpp-cuda)
-
+  # Licenses
+  # The licenses of staged packages are automatically included in the snap at $SNAP/usr/share/doc/
+  # Additional licenses:
   notice:
     plugin: nil
     source: NOTICE
@@ -160,6 +179,16 @@ parts:
       # Add license files referenced in NOTICE
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
+
+  llamacpp-license:
+    plugin: dump
+    source: https://github.com/ggerganov/llama.cpp.git
+    source-depth: 1
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp
+      mkdir -p $license_dir
+      cp LICENSE $license_dir/
+      cp -r licenses/* $license_dir/
 
 components:
   model-30b-a3b-q4-k-m-gguf-1-of-6: &model
@@ -211,4 +240,3 @@ apps:
       - hardware-observe
       - opengl
       - home
-
