@@ -187,6 +187,24 @@ parts:
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
 
 components:
+  #
+  # Engines
+  #
+
+  llama-cpp:
+    type: standard
+    summary: llama.cpp using default CPU instruction sets
+    description: LLM inference in C/C++
+
+  llama-cpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++
+
+  #
+  # Models
+  #
+
   model-30b-a3b-q4-k-m-gguf-1-of-6: &model
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
@@ -207,16 +225,6 @@ components:
   model-30b-a3b-q4-k-m-gguf-6-of-6:
     <<: *model
 
-  llama-cpp:
-    type: standard
-    summary: llama.cpp using default CPU instruction sets
-    description: LLM inference in C/C++
-  
-  llama-cpp-cuda:
-    type: standard
-    summary: llama.cpp with CUDA backend
-    description: LLM inference in C/C++
-
 apps:
   nemotron-3-nano:
     command: bin/nemotron-3-nano
@@ -232,7 +240,7 @@ apps:
     command: bin/server.sh
     daemon: simple
     plugs:
-      - network-bind
       - hardware-observe
       - opengl
+      - network-bind
       - home
