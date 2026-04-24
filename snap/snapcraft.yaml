@@ -95,7 +95,11 @@ parts:
       mkdir -p $license_dir
       cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
 
-  # TODO: webui
+  webui:
+    plugin: dump
+    source: https://github.com/canonical/inference-snaps-webui/releases/download/v1.0.0-beta.4/inference-snaps-webui.tar.xz
+    organize:
+      "*": webui/
 
   local-component-files:
     plugin: dump
@@ -233,8 +237,15 @@ apps:
       - hardware-observe
       - opengl
       - network
+      - desktop
     environment:
-      ADDITIONAL_FEATURES: chat
+      ADDITIONAL_FEATURES: chat, webui
+
+  server-webui:
+    command: bin/server-webui.sh
+    daemon: simple
+    plugs:
+      - network-bind
 
   server:
     command: bin/server.sh
