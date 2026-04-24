@@ -13,10 +13,29 @@ compression: lzo
 assumes:
   - snapd2.68 # for components support
 
+platforms:
+  amd64:
+  arm64:
+
+slots:
+  status:
+    interface: content
+    source:
+      read:
+        - &status-share $SNAP_DATA/share/status
+  open-webui:
+    interface: content
+    content: open-webui-config
+    source:
+      read:
+        - &owui-share $SNAP_DATA/share/open-webui
+
 environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
   OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
+  STATUS_SHARE: *status-share
+  OWUI_SHARE: *owui-share
 
 layout:
   # Under wsl the libraries are expected in /usr/lib/wsl
@@ -54,6 +73,8 @@ parts:
     organize:
       "completion.bash": bin/
       "server.sh": bin/
+      "server-webui.sh": bin/
+      "export-shared-configs.sh": bin/
 
   engines:
     source: engines
@@ -115,8 +136,8 @@ parts:
   llama-cpp:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
     override-build: |
       # Move license files to be included in the snap, not the component
       mkdir -p $CRAFT_PRIME/usr/share/doc/
@@ -131,8 +152,8 @@ parts:
   llama-cpp-cuda:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
     override-build: |
       # Move license files to be included in the snap, not the component
       mkdir -p $CRAFT_PRIME/usr/share/doc/
@@ -241,12 +262,6 @@ apps:
     environment:
       ADDITIONAL_FEATURES: chat, webui
 
-  server-webui:
-    command: bin/server-webui.sh
-    daemon: simple
-    plugs:
-      - network-bind
-
   server:
     command: bin/server.sh
     daemon: simple
@@ -255,3 +270,9 @@ apps:
       - opengl
       - network-bind
       - home
+
+  server-webui:
+    command: bin/server-webui.sh
+    daemon: simple
+    plugs:
+      - network-bind

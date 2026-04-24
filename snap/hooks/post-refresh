@@ -28,7 +28,9 @@ fi
 ln -sfn /var/lib/snapd/hostfs/usr/lib/wsl/lib $SNAP_COMMON/usr/lib/wsl/lib
 ln -sfn /var/lib/snapd/hostfs/usr/lib/wsl/drivers $SNAP_COMMON/usr/lib/wsl/drivers
 
+#
 # Refresh the active engine
+#
 # This involves applying changes to configurations and required snap components.
 # If the active engine has been removed, another engine will be auto selected.
 # The automatic selection requires access to hardware information on the system.
