@@ -80,10 +80,11 @@ parts:
     plugin: nil
     stage-packages:
       - pciutils # lspci
+      # - clinfo # used for Intel GPU vRAM detection. Explicitly removed in this snap, as it does not support Intel GPUs.
 
   # Used for NVIDIA vRAM and CUDA Capability detection.
   # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
-  nvidia-smi:
+  cli-nvidia-smi:
     plugin: nil
     build-packages:
       - nvidia-utils-580
