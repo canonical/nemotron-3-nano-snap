@@ -117,10 +117,15 @@ parts:
     source:
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
       - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp
+
+      craftctl default
     stage-packages:
       - libgomp1
     organize:
-      # move everything, including the staged packages
       "*": (component/llama-cpp)
 
   llama-cpp-cuda:
@@ -128,10 +133,15 @@ parts:
     source:
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
       - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
+
+      craftctl default
     stage-packages:
       - libgomp1
     organize:
-      # move everything, including the staged packages
       "*": (component/llama-cpp-cuda)
 
   model-30b-a3b-q4-k-m-gguf:
@@ -179,16 +189,6 @@ parts:
       # Add license files referenced in NOTICE
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
-
-  llamacpp-license:
-    plugin: dump
-    source: https://github.com/ggerganov/llama.cpp.git
-    source-depth: 1
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp
-      mkdir -p $license_dir
-      cp LICENSE $license_dir/
-      cp -r licenses/* $license_dir/
 
 components:
   model-30b-a3b-q4-k-m-gguf-1-of-6: &model
