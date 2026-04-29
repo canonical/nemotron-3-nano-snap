@@ -10,8 +10,8 @@
     {
       "customType": "regex",
       "description": "Update inference-snaps-cli",
-      "fileMatch": [
-        "^snap/snapcraft\\.yaml$"
+      "managerFilePatterns": [
+        "snap/snapcraft.yaml"
       ],
       "matchStrings": [
         "https://github\\.com/canonical/inference-snaps-cli/releases/download/(?<currentValue>v[^/]+)/inference-snaps-cli"
@@ -22,9 +22,22 @@
     },
     {
       "customType": "regex",
+      "description": "Update inference-snaps-webui",
+      "managerFilePatterns": [
+        "snap/snapcraft.yaml"
+      ],
+      "matchStrings": [
+        "https://github\\.com/canonical/inference-snaps-webui/releases/download/(?<currentValue>v[^/]+)/inference-snaps-webui"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "canonical/inference-snaps-webui",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
       "description": "Update llama.cpp builds",
-      "fileMatch": [
-        "^snap/snapcraft\\.yaml$"
+      "managerFilePatterns": [
+        "snap/snapcraft.yaml"
       ],
       "matchStrings": [
         "https://github\\.com/jpm-canonical/llama\\.cpp-builds/releases/download/(?<currentValue>[^/]+)/llamacpp"
