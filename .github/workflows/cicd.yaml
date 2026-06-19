@@ -1,0 +1,39 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch: # manual trigger
+
+
+# Keep one CICD run active at a time so publish/test/promote happen in order
+concurrency:
+  group: ${{ github.workflow }}
+  queue: max
+
+permissions:
+  contents: read
+
+jobs:
+  cicd:
+    if: github.repository == 'canonical/nemotron-3-nano-snap' # do not run on forks
+    uses: canonical/inference-snaps-dev/.github/workflows/reuse-cicd.yaml@v2
+    with:
+      build-runner: |
+        [
+          ["amd64", "xlarge", "noble", "self-hosted"],
+          ["arm64", "xlarge", "noble", "self-hosted"]
+        ]
+      build-init-script: '.github/workflows/init-build.sh'
+      store-track: latest
+      snap-name: nemotron-3-nano
+      smoke-test-runner: |
+        [
+          ["amd64", "large", "self-hosted"],
+          ["arm64", "large", "self-hosted"]
+        ]
+      smoke-test-engine: cpu
+    secrets:
+      store-credentials: ${{ secrets.STORE_LOGIN_MAIN }}
