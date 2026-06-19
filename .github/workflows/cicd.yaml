@@ -36,4 +36,4 @@ jobs:
         ]
       smoke-test-engine: cpu
     secrets:
-      store-credentials: ${{ secrets.STORE_LOGIN }}
+      store-credentials: ${{ secrets.STORE_LOGIN_MAIN }}
