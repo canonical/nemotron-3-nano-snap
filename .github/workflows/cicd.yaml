@@ -29,10 +29,11 @@ jobs:
       build-init-script: '.github/workflows/init-build.sh'
       store-track: latest
       snap-name: nemotron-3-nano
+      # Loading the model on arm64 requires more memory
       smoke-test-runner: |
         [
           ["amd64", "large", "self-hosted"],
-          ["arm64", "large", "self-hosted"]
+          ["arm64", "xlarge", "self-hosted"]
         ]
       smoke-test-engine: cpu
     secrets:
