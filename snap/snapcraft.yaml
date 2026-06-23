@@ -2,8 +2,8 @@ name: nemotron-3-nano
 base: core24
 summary: Nemotron 3 Nano inference snap
 description: |
-  This snap installs an optimized environment for inference with Nemotron 3 Nano. 
-  
+  This snap installs an optimized environment for inference with Nemotron 3 Nano.
+
   Before you start, make sure to have the necessary drivers installed on the host:
   https://documentation.ubuntu.com/inference-snaps/how-to/install-drivers/
   
@@ -15,9 +15,9 @@ description: |
   
   `nemotron-3-nano --help`
   
-  **Licensing: **
-  
-  The Nemotron 3 Nano model is provided by NVIDIA Corporation under the NVIDIA Open Model License: 
+  **Licensing:**
+
+  The Nemotron 3 Nano model is provided by NVIDIA Corporation under the NVIDIA Open Model License:
   https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/
   
   The licenses of all the bundled software can be found inside the snap at `/snap/nemotron-3-nano/current/usr/share/doc`.
