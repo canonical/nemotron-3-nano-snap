@@ -10,6 +10,13 @@ grade: stable
 confinement: strict
 compression: lzo
 
+assumes:
+  - snapd2.68 # for components support
+
+platforms:
+  amd64:
+  arm64:
+
 environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
@@ -30,9 +37,11 @@ plugs:
 
 hooks:
   install:
-    plugs:
+    plugs: &install-plugs
       - hardware-observe
       - opengl
+  post-refresh:
+    plugs: *install-plugs
 
 parts:
   version:
@@ -46,26 +55,41 @@ parts:
       # Do nothing. This significantly reduces build time when sourcing large files.
     override-build: |
       set -eo pipefail
-      cli_version=$($CRAFT_STAGE/bin/nemotron-3-nano version --format=json | jq .cli --raw-output)
+      cli_version=$($CRAFT_STAGE/bin/modelctl version --format=json | jq .cli --raw-output)
       git_hash=$(git -C "$SNAPCRAFT_PROJECT_DIR" describe --always)
       craftctl set version="${cli_version#v}+${git_hash}"
 
   cli:
     source:
-      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0/inference-snaps-cli-linux-amd64.tar.xz
-      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0/inference-snaps-cli-linux-arm64.tar.xz
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.4/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.4/inference-snaps-cli-linux-arm64.tar.xz
     plugin: dump
     override-build: |
-      mkdir -p bin
-      mv cli bin/modelctl
 
       # For tab completion
       ln --symbolic ./modelctl bin/nemotron-3-nano
 
       craftctl default
+
+  cli-dependencies:
+    plugin: nil
     stage-packages:
       - pciutils # lspci
-      - nvidia-utils-580 # nvidia-smi, used for NVIDIA vRAM and CUDA Capability detection
+      - clinfo # used for Intel GPU vRAM detection. It depends on intel-opencl-icd
+
+  # Used for NVIDIA vRAM and CUDA Capability detection.
+  # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
+  cli-nvidia-smi:
+    plugin: nil
+    build-packages:
+      - nvidia-utils-580
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp /usr/bin/nvidia-smi $CRAFT_PART_INSTALL/usr/bin/
+
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/nvidia-utils-580/
+      mkdir -p $license_dir
+      cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
 
   webui:
     plugin: dump
@@ -78,7 +102,19 @@ parts:
     plugin: dump
     organize:
       "*": engines/
-  
+
+  runtimes:
+    source: runtimes
+    plugin: dump
+    organize:
+      "*": runtimes/
+
+  models:
+    source: models
+    plugin: dump
+    organize:
+      "*": models/
+
   scripts:
     source: scripts
     plugin: dump
@@ -87,7 +123,6 @@ parts:
     organize:
       "server.sh": bin/
       "server-webui.sh": bin/
-      "completion.bash": bin/
 
   model-30b-a3b-q4-k-m-gguf:
     plugin: nil
@@ -119,7 +154,7 @@ parts:
         fi
       done
 
-  llama-cpp:
+  llamacpp:
     plugin: dump
     source: 
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
@@ -133,15 +168,9 @@ parts:
     stage-packages:
       - libgomp1
     organize:
-      "*": (component/llama-cpp)
-  
-  llama-cpp-local-files:
-    plugin: dump
-    source: components/llama-cpp
-    organize:
-      "*": (component/llama-cpp)
-    
-  llama-cpp-cuda:
+      "*": (component/llamacpp)
+
+  llamacpp-cuda:
     plugin: dump
     source: 
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
@@ -155,13 +184,7 @@ parts:
     stage-packages:
       - libgomp1
     organize:
-      "*": (component/llama-cpp-cuda)
-
-  llama-cpp-cuda-local-files:
-    plugin: dump
-    source: components/llama-cpp-cuda
-    organize:
-      "*": (component/llama-cpp-cuda)
+      "*": (component/llamacpp-cuda)
 
   notice:
     plugin: nil
@@ -196,20 +219,20 @@ components:
   model-30b-a3b-q4-k-m-gguf-6-of-6:
     <<: *model
 
-  llama-cpp:
+  llamacpp:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-  
-  llama-cpp-cuda:
+
+  llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
     description: LLM inference in C/C++
 
 apps:
   nemotron-3-nano:
-    command: bin/nemotron-3-nano
-    completer: bin/completion.bash
+    command: bin/modelctl
+    completer: bin/snap-completer.bash
     plugs:
       - hardware-observe
       - opengl
@@ -232,4 +255,3 @@ apps:
       - hardware-observe
       - opengl
       - home
-

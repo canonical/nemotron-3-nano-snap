@@ -1,0 +1,33 @@
+id: 30b-a3b-q4-k-m-gguf
+name: 30b-a3b-q4-k-m
+
+description: |
+  Nemotron-Nano-3-30B-A3B is a reasoning-focused large language model by NVIDIA
+  with 30B total parameters (3.5B active) using a Mixture-of-Experts
+  architecture.
+  
+  It excels at instruction following, code generation, and multi-step reasoning
+  tasks.
+    
+model-card-url: https://huggingface.co/ggml-org/Nemotron-Nano-3-30B-A3B-GGUF
+quantization: Q4_K_M
+
+disk-size: 18G
+
+capabilities:
+  - text
+  - thinking
+
+components:
+  - model-30b-a3b-q4-k-m-gguf-1-of-6
+  - model-30b-a3b-q4-k-m-gguf-2-of-6
+  - model-30b-a3b-q4-k-m-gguf-3-of-6
+  - model-30b-a3b-q4-k-m-gguf-4-of-6
+  - model-30b-a3b-q4-k-m-gguf-5-of-6
+  - model-30b-a3b-q4-k-m-gguf-6-of-6
+
+environment:
+  # The model is split into multiple shards maintained in individual component directories.
+  # The layout defined in the model component assembles them via symlinks at /tmp/nemotron-3-nano-shards/.
+  - MODEL_FILE=/tmp/nemotron-3-nano-shards/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf
+  - MODEL_NAME=nemotron-3-nano-30b-a3b-q4-k-m
