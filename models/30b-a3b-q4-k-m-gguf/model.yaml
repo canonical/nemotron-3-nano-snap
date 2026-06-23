@@ -27,6 +27,6 @@ components:
 
 environment:
   # The model is split into multiple shards maintained in individual component directories.
-  # The layout defined in the model component assembles them via symlinks at /tmp/nemotron-3-nano-shards/.
+  # The layout defined in the model.yaml assembles them via symlinks at /tmp/nemotron-3-nano-shards/.
   - MODEL_FILE=/tmp/nemotron-3-nano-shards/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf
   - MODEL_NAME=nemotron-3-nano-30b-a3b-q4-k-m
