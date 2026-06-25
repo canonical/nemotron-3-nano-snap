@@ -1,5 +1,16 @@
 #!/bin/bash -eu
 
+port="$(modelctl get http.port)"
+host="$(modelctl get http.host)"
 sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
 
-exec "$SNAP_COMPONENTS/llama-cpp-cuda/server" --sleep-idle-seconds "$sleep_idle_seconds" "$@"
+set -x
+# Adding --no-warmup to skip the model warmup phase during server startup in order to reduce resource usage if not needed.
+exec llama-server \
+  --model "$MODEL_FILE" \
+  --alias "$MODEL_NAME" \
+  --port "$port" \
+  --host "$host" \
+  --no-warmup \
+  --sleep-idle-seconds "$sleep_idle_seconds" \
+  "$@"

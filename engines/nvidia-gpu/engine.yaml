@@ -1,25 +1,28 @@
 name: nvidia-gpu
-description: Optimized for inference on Nvidia GPUs, using CUDA
+summary: CUDA-optimized for NVIDIA GPUs
+description: |
+  This engine uses llama.cpp with the CUDA backend.
+
+  It is optimized for NVIDIA GPUs.
+
+  This engine supports both amd64 and arm64 CPU architectures.
 vendor: Canonical Ltd
-grade: stable
 devices:
   allof:
     - type: gpu
       vendor-id: 0x10de # Nvidia Corporation
-  anyof: 
+  anyof:
     - type: cpu
       architecture: amd64
     - type: cpu
       architecture: arm64
-memory: 24G
-disk-space: 48G
-components:
-  - llama-cpp-cuda
-  - model-30b-a3b-q4-k-m-gguf-1-of-6
-  - model-30b-a3b-q4-k-m-gguf-2-of-6
-  - model-30b-a3b-q4-k-m-gguf-3-of-6
-  - model-30b-a3b-q4-k-m-gguf-4-of-6
-  - model-30b-a3b-q4-k-m-gguf-5-of-6
-  - model-30b-a3b-q4-k-m-gguf-6-of-6
+
+runtime: llamacpp-cuda
+
+model:
+  default: 30b-a3b-q4-k-m-gguf
+  options:
+    - 30b-a3b-q4-k-m-gguf
+
 configurations:
   sleep-idle-seconds: 600
