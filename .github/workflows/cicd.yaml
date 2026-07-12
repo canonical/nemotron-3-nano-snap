@@ -1,20 +1,18 @@
+# This workflow is used to build and publish the snap to the store on every push to main.
 name: CICD
 
 on:
   push:
     branches:
       - main
-
-  workflow_dispatch: # manual trigger
+  
+  workflow_dispatch: # manual trigger 
 
 
 # Keep one CICD run active at a time so publish/test/promote happen in order
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${ github.workflow }
   queue: max
-
-permissions:
-  contents: read
 
 jobs:
   cicd:
@@ -23,18 +21,10 @@ jobs:
     with:
       build-runner: |
         [
-          ["amd64", "xlarge", "noble", "self-hosted"],
-          ["arm64", "xlarge", "noble", "self-hosted"]
-        ]
-      build-init-script: '.github/workflows/init-build.sh'
+          ["amd64", "xlarge", "noble", "self-hosted"]
+      build-init-script: 'download-models.sh'
       store-track: latest
       snap-name: nemotron-3-nano
-      # Loading the model on arm64 requires more memory
-      smoke-test-runner: |
-        [
-          ["amd64", "large", "self-hosted"],
-          ["arm64", "xlarge", "self-hosted"]
-        ]
       smoke-test-engine: cpu
     secrets:
-      store-credentials: ${{ secrets.STORE_LOGIN_MAIN }}
+      store-credentials: ${ secrets.STORE_LOGIN_MAIN }
