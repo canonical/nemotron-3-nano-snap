@@ -44,7 +44,7 @@ jobs:
                     "test-chat-tps": true,
                     "expected-tps": 10
           }
-]
+        ]
       snap-name: nemotron-3-nano
       testflinger-client-id: ${{ vars.TESTFLINGER_CLIENT_ID }}
     secrets:
