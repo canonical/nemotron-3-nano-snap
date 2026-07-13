@@ -29,6 +29,7 @@ jobs:
       store-track: latest
       snap-name: nemotron-3-nano
       smoke-test-engine: cpu
+      # Loading the model on arm64 requires more memory
       smoke-test-runner: |
         [
           ["amd64", "large", "self-hosted"],
