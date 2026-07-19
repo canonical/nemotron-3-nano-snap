@@ -16,9 +16,9 @@ devices:
 runtime: llamacpp
 
 model:
-  default: 30b-a3b-q4-k-m-gguf
+  default: nemotron-3-nano-30b-a3b
   options:
-    - 30b-a3b-q4-k-m-gguf
+    - nemotron-3-nano-30b-a3b
 
 configurations:
   sleep-idle-seconds: 600

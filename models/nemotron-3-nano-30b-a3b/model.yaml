@@ -1,5 +1,4 @@
-id: 30b-a3b-q4-k-m-gguf
-name: 30b-a3b-q4-k-m
+name: nemotron-3-nano-30b-a3b
 
 description: |
   Nemotron Nano 3 30B-A3B is a reasoning-focused large language model by
@@ -9,7 +8,7 @@ description: |
   It excels at instruction following, code generation, and multi-step
   reasoning tasks.
 model-card-url: https://huggingface.co/ggml-org/Nemotron-Nano-3-30B-A3B-GGUF
-quantization: Q4_K_M
+quantization: q4-k-m
 
 disk-size: 18G
 
