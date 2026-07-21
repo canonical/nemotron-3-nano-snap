@@ -25,16 +25,16 @@ help: ## Show this help message
 
 init: init-submodules install-deps download-models ## Initialize the build environment (dependencies, model weights, submodules, etc.)
 
-build: init ## Build the snap
+build: ## Build the snap
 	./dev/build.sh
 
-install: init ## Install the snap
+install: ## Install the snap
 	./dev/install.sh
 
-upload: init ## Upload the snap
+upload: ## Upload the snap
 	./dev/upload.sh
 
-smoke-test: init ## Run smoke tests (override with SNAP_NAME=... ENGINE=...)
+smoke-test: ## Run smoke tests (override with SNAP_NAME=... ENGINE=...)
 	sudo ./dev/smoke-test.sh $(SNAP_NAME) $(ENGINE)
 
 #
