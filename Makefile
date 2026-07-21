@@ -3,10 +3,10 @@ SHELL := /bin/bash
 # Always run `hf` via pipx to avoid relying on local `hf` installations.
 hf := pipx run --spec "huggingface_hub[cli]" hf
 
-SNAP_NAME ?= smollm2
+SNAP_NAME ?= nemotron-3-nano
 ENGINE ?= cpu
 
-.PHONY: help all init init-submodules install-deps download-models download-model-30b-3ab build install upload smoke-test
+.PHONY: help all init init-submodules install-deps download-models download-model-30b-a3b build install upload smoke-test
 
 all: help
 
@@ -55,9 +55,9 @@ init-submodules:
 		git submodule update --init; \
 	fi
 
-download-models: download-model-30b-3ab
-	
-download-model-30b-3ab:
+download-models: download-model-30b-a3b
+
+download-model-30b-a3b:
 	@echo "Downloading Nemotron-Nano-3-30B-A3B-Q4_K_M model weights..."
 	$(hf) download inference-snaps/Nemotron-Nano-3-30B-A3B-Q4_K_M-5GB \
 		--local-dir components/model-30b-a3b-q4-k-m-gguf/
