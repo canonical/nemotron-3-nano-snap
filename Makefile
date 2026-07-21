@@ -49,15 +49,15 @@ install-deps:
 		sudo apt-get install -y pipx; \
 	}
 
+init-submodules:
+	@echo "Initializing submodules..."
+	@if git submodule status | grep -q '^-'; then \
+		git submodule update --init; \
+	fi
+
 download-models: download-model-30b-3ab
 	
 download-model-30b-3ab:
 	@echo "Downloading Nemotron-Nano-3-30B-A3B-Q4_K_M model weights..."
 	$(hf) download inference-snaps/Nemotron-Nano-3-30B-A3B-Q4_K_M-5GB \
 		--local-dir components/model-30b-a3b-q4-k-m-gguf/
-
-init-submodules:
-	@echo "Initializing submodules..."
-	@if git submodule status | grep -q '^-'; then \
-		git submodule update --init; \
-	fi
