@@ -8,7 +8,7 @@ description: |
   It excels at instruction following, code generation, and multi-step
   reasoning tasks.
 model-card-url: https://huggingface.co/ggml-org/Nemotron-Nano-3-30B-A3B-GGUF
-quantization: q4-k-m
+quantization: Q4_K_M
 
 disk-size: 18G
 
