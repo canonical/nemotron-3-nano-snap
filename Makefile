@@ -6,7 +6,7 @@ hf := pipx run --spec "huggingface_hub[cli]" hf
 SNAP_NAME ?= nemotron-3-nano
 ENGINE ?= cpu
 
-.PHONY: help all init init-submodules install-deps download-models download-model-30b-a3b build install upload smoke-test
+.PHONY: all help init build install upload smoke-test install-deps init-submodules download-models download-model-30b-a3b
 
 all: help
 
