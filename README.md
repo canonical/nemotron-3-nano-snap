@@ -14,16 +14,18 @@ large language model with reasoning capabilities built with a hybrid Mixture-of-
 
 ## Build and install from source
 
-Clone this repo with its submodules:
+Clone the repo:
 ```shell
-git clone --recurse-submodules https://github.com/canonical/nemotron-3-nano-snap
+git clone https://github.com/canonical/nemotron-3-nano-snap
 ```
 
-Prepare the required models by following the instructions for each model, under the [components](./components) directory. 
-
-Build the snap and its component:
+Initialize the development environment:
 ```shell
-snapcraft pack -v
+make init
 ```
 
-Refer to the `./dev` directory for additional development tools.
+Build and install snap:
+```shell
+make build
+make install
+```

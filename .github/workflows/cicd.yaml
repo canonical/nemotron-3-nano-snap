@@ -24,8 +24,6 @@ jobs:
           ["amd64", "xlarge", "noble", "self-hosted"],
           ["arm64", "xlarge", "noble", "self-hosted"]
         ]
-      
-      build-init-script: 'download-models.sh'
       store-track: latest
       snap-name: nemotron-3-nano
       smoke-test-engine: cpu
