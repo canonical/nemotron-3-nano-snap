@@ -17,6 +17,7 @@ large language model with reasoning capabilities built with a hybrid Mixture-of-
 Clone the repo:
 ```shell
 git clone https://github.com/canonical/nemotron-3-nano-snap
+cd nemotron-3-nano-snap
 ```
 
 Initialize the development environment:
