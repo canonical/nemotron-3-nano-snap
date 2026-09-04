@@ -1,0 +1,26 @@
+name: nemotron-3-nano-4b
+
+description: |
+  Nemotron Nano 3 4B is a dense reasoning-focused large language 
+  model by NVIDIA with 4B parameters
+  
+  It excels at instruction following, code generation, and multi-step
+  reasoning tasks.
+model-card-url: https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-GGUF
+quantization: Q4_K_M
+
+disk-size: 3G
+
+capabilities:
+  - text
+  - thinking
+
+components:
+  - model-4b-q4-k-m-gguf
+
+environment:
+  # The model is split into multiple shards maintained in individual component directories.
+  # The layout below assembles them via symlinks at /tmp/nemotron-3-nano-shards/ so that
+  # llama-server can load the sharded model from a single directory.
+  - MODEL_FILE=$SNAP_COMPONENTS/model-4b-q4-k-m-gguf/NVIDIA-Nemotron3-Nano-4B-Q4_K_M.gguf
+  - MODEL_NAME=nemotron-3-nano-4b-q4-k-m
