@@ -9,7 +9,7 @@ description: |
 model-card-url: https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-GGUF
 quantization: Q4_K_M
 
-disk-size: 2.86G
+disk-size: 3G
 
 capabilities:
   - text
