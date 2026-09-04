@@ -18,6 +18,7 @@ runtime: llamacpp
 model:
   default: nemotron-3-nano-30b-a3b
   options:
+    - nemotron-3-nano-4b
     - nemotron-3-nano-30b-a3b
 
 configurations:
