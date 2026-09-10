@@ -146,19 +146,24 @@ parts:
       "server.sh": bin/
       "server-webui.sh": bin/
 
-  model-30b-a3b-q4-k-m-gguf:
-    plugin: nil
-    override-prime: |
-      set +x # reduce noise
-
-      # Bypassing the usual part lifecycle saves disk space and time when dealing with large files
-      # Copy model files directly from the project into the respective component's prime directory
-      for i in {1..6}; do
-        source="$CRAFT_PROJECT_DIR/components/model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-0000${i}-of-00006.gguf"
-        target="CRAFT_COMPONENT_MODEL_30B_A3B_Q4_K_M_GGUF_${i}_OF_6_PRIME"
-
-        cp -v "$source" "${!target}/"
-      done
+  local-component-files:
+     # Use the cmake plugin instead of "dump" to prevent unwanted copies
+     # See https://github.com/canonical/craft-parts/issues/1609
+    plugin: cmake
+    source: components
+    override-build: |
+      cp -rf --archive --link --no-dereference ${CRAFT_PART_SRC}/* ${CRAFT_PART_INSTALL}
+    organize:
+      "model-4b-q4-k-m-gguf/*": (component/model-4b-q4-k-m-gguf)
+      "model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-00001-of-00006.gguf": (component/model-30b-a3b-q4-k-m-gguf-1-of-6)
+      "model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-00002-of-00006.gguf": (component/model-30b-a3b-q4-k-m-gguf-2-of-6)
+      "model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-00003-of-00006.gguf": (component/model-30b-a3b-q4-k-m-gguf-3-of-6)
+      "model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-00004-of-00006.gguf": (component/model-30b-a3b-q4-k-m-gguf-4-of-6)
+      "model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-00005-of-00006.gguf": (component/model-30b-a3b-q4-k-m-gguf-5-of-6)
+      "model-30b-a3b-q4-k-m-gguf/Nemotron-Nano-3-30B-A3B-Q4_K_M-00006-of-00006.gguf": (component/model-30b-a3b-q4-k-m-gguf-6-of-6)
+    prime:
+      # Exclude everything not explicitly organized
+      - -*
 
   llamacpp:
     plugin: dump
@@ -205,6 +210,11 @@ parts:
       cp $SNAPCRAFT_PROJECT_DIR/nvidia-open-model-license-agreements-24-10-2025.pdf $license_dir/
 
 components:
+  model-4b-q4-k-m-gguf:
+    type: standard
+    summary: NVIDIA Nemotron-Nano-3-4B-Q4_K_M GGUF
+    description: Model weights for NVIDIA Nemotron 3 Nano with 4B parameters in GGUF format
+
   model-30b-a3b-q4-k-m-gguf-1-of-6: &model
     type: standard
     summary: NVIDIA Nemotron-Nano-3-30B-A3B-Q4_K_M GGUF
