@@ -27,6 +27,7 @@ jobs:
       store-track: latest
       snap-name: nemotron-3-nano
       smoke-test-engine: cpu
+      smoke-test-features: openai_models, openai_chat_text
       # Loading the model on arm64 requires more memory
       smoke-test-runner: |
         [
