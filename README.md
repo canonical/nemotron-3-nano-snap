@@ -1,7 +1,7 @@
 # Nemotron 3 Nano inference snap
 [![nemotron-3-nano](https://snapcraft.io/nemotron-3-nano/badge.svg)](https://snapcraft.io/nemotron-3-nano)
 
-NVIDIA Nemotron 3 Nano is a large language model with reasoning capabilities built with a hybrid Mixture-of-Experts (MoE) architecture.
+Nemotron 3 Nano is a large language model from NVIDIA with reasoning capabilities built with a hybrid Mixture-of-Experts (MoE) architecture.
 
 Use this snap to quickly install an optimized environment for local inference with Nemotron 3 Nano.
 
