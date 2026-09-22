@@ -3,7 +3,7 @@ title: Nemotron 3 Nano
 base: core24
 summary: Local AI with Nemotron 3 Nano inference snap
 description: |
-  NVIDIA Nemotron 3 Nano is a large language model with reasoning capabilities built with a hybrid Mixture-of-Experts (MoE) architecture.
+  Nemotron 3 Nano is a large language model from NVIDIA with reasoning capabilities built with a hybrid Mixture-of-Experts (MoE) architecture.
 
   Use this snap to quickly install an optimized environment for local inference with Nemotron 3 Nano.
 
