@@ -21,8 +21,8 @@ jobs:
     with:
       build-runner: |
         [
-          ["amd64", "xlarge", "noble", "self-hosted"],
-          ["arm64", "xlarge", "noble", "self-hosted"]
+          ["amd64", "medium-extra", "noble", "self-hosted"],
+          ["arm64", "medium-extra", "noble", "self-hosted"]
         ]
       store-track: latest
       snap-name: nemotron-3-nano
